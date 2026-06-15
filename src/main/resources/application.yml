@@ -15,6 +15,7 @@ spring:
         default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         default.value.serde: io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde
         schema.registry.url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
+        auto.create.topics.enable: true
         # Commit interval for stateful processing
         commit.interval.ms: 1000
         # State store directory
@@ -46,6 +47,7 @@ sentinelpay:
     topics:
       transaction-events: transaction-events
       decision-events: decision-events
+    schema-registry-url: ${SCHEMA_REGISTRY_URL:http://localhost:8081}
   rules:
     # Amount threshold in USD
     max-transaction-amount: 10000.00
@@ -55,3 +57,7 @@ sentinelpay:
     max-transactions-per-window: 5
     # High risk country codes
     high-risk-countries: IR,KP,SY
+  security:
+    jwt:
+      # JWT signing secret (can be overridden with env var SENTINELPAY_JWT_SECRET)
+      secret: ${JWT_SECRET:local-dev-secret-minimum-32-characters}

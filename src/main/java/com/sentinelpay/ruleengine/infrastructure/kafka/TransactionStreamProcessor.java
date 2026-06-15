@@ -32,7 +32,7 @@ public class TransactionStreamProcessor {
             RuleEngine ruleEngine,
             @Value("${sentinelpay.kafka.topics.transaction-events}") String transactionTopic,
             @Value("${sentinelpay.kafka.topics.decision-events}") String decisionTopic,
-            @Value("${spring.kafka.properties.schema.registry.url}") String schemaRegistryUrl) {
+            @Value("${sentinelpay.kafka.schema-registry-url}") String schemaRegistryUrl) {
         this.ruleEngine = ruleEngine;
         this.transactionTopic = transactionTopic;
         this.decisionTopic = decisionTopic;
@@ -72,6 +72,7 @@ public class TransactionStreamProcessor {
                 .setRiskScore(result.riskScore())
                 .setRuleResults(result.ruleResults().stream()
                         .map(r -> com.sentinelpay.common.events.RuleResult.newBuilder()
+                                .setRuleId(com.sentinelpay.common.util.IdGenerator.generate())
                                 .setRuleName(r.ruleName())
                                 .setTriggered(r.triggered())
                                 .setReason(r.reason())
